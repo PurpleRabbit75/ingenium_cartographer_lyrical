@@ -341,6 +341,11 @@ function main(){
   #   A batch of files copied from the remote and processed according to the params passed to the file
   #######################################
 
+  echo -e "${BOLD_CYAN}CAUTION: Unconfigured, this script will prompt for the password of the remote device 14 different times."
+  echo -e "It is strongly recommended that you configure ssh keys before proceeding further if you have not already done so!"
+  echo -e "Press Enter to acknowledge this message and proceed: ${NC}"
+  read -r
+
   #AB Declare local variables
   local local_dir_list_file
   local remote_dir_list_file
