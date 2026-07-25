@@ -18,9 +18,9 @@ while true; do
     --color) color="$1"; shift ;;
     --convert) convert_output=1; shift ;;
     -f|--fuzz) write_fuzz_files=1; shift ;;
-    -h|--help) echo -e "Usage: ./process.sh <input_mcap> [-f|--fuzz] [--convert] [--color <\"(r,g,b)\">] \n--color colors the converted .ply file. \n--fuzz creates empty files with the same names as real data files, for testing purposes. \n--convert converts the .pcd to a colored .ply and the .g2o to a .poly file"; exit 0 ;;
+    -h|--help) echo -e "Usage: ./process.sh <input_mcap> [-f|--fuzz] [-h|--help] [--convert] [--color <\"(r,g,b)\">] \n--color colors the converted .ply file. \n--fuzz creates empty files with the same names as real data files, for testing purposes. \n--convert converts the .pcd to a colored .ply and the .g2o to a .poly file"; exit 0 ;;
     --) shift; break ;;
-    *) echo "Unexpected option: $1" >&2; echo "Usage: ./process.sh <input_mcap> [-c|--color <(r,g,b)>] [-f|--fuzz]"; exit 2 ;;
+    *) echo "Unexpected option: $1" >&2; echo "Usage: ./process.sh <input_mcap> [-f|--fuzz] [-h|--help] [--convert] [--color <\"(r,g,b)\">]"; exit 2 ;;
   esac
 done
 
