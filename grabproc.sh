@@ -114,7 +114,7 @@ function get_Documents_Data_TLDs() {
   #######################################
 
   local computer_name=$1 #AB must be either "main" or "rpi"
-  local output_file="${computer_name}_extant_data_directories_$(date "+%F_%H:%M").txt"
+  local output_file="${computer_name}_extant_data_directories_$(date "+%F_%H_%M").txt"
   local cwd=$(pwd)
   cd "$HOME/Documents/Data" #AB This is default filesystem, so we can assume it exists
   touch "$output_file" #AB Create an output file
@@ -157,7 +157,7 @@ function compare_directory_list_files() {
     #AB Set up variables
     local rpi_list_file="$1"
     local main_list_file="$2"
-    local output_file="RPi_unique_data_files_$(date "+%F_%H:%M").txt"
+    local output_file="RPi_unique_data_files_$(date "+%F_%H_%M").txt"
 
     #AB Read the two files containing filtered lists of directories into arrays
     readarray -t rpi_list < "$rpi_list_file"
