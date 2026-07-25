@@ -157,7 +157,7 @@ function compare_directory_list_files() {
     #AB Set up variables
     local rpi_list_file="$1"
     local main_list_file="$2"
-    local output_file="RPi_unique_data_files_$(date "+%F_%H_%M").txt"
+    local output_file="rpi_unique_data_files_$(date "+%F_%H_%M").txt"
 
     #AB Read the two files containing filtered lists of directories into arrays
     readarray -t rpi_list < "$rpi_list_file"
@@ -341,9 +341,9 @@ function main(){
   #   A batch of files copied from the remote and processed according to the params passed to the file
   #######################################
 
-  echo -e "${BOLD_CYAN}CAUTION: Unconfigured, this script will prompt for the password of the remote device 14 different times."
+  echo -e "${BOLD_CYAN}CAUTION: Unconfigured, this script will prompt for the password of the remote device 16 different times."
   echo -e "It is strongly recommended that you configure ssh keys before proceeding further if you have not already done so!"
-  echo -e "Press Enter to acknowledge this message and proceed: ${NC}"
+  echo -e "Press Enter to acknowledge this message and proceed, or Ctrl + C to exit: ${NC}"
   read -r
 
   #AB Declare local variables
@@ -377,6 +377,13 @@ function main(){
   if [[ "$run_slam" -eq 1 ]]; then
     run_SLAM "$difference_file"
   fi
+
+  #AB Cleanup
+  rm $difference_file
+  rm $local_dir_list_file
+  ssh_send "CD_RoM ${difference_file}"
+  ssh_send "CD_RoM ${remote_dir_list_file}"
+  #AB Note that we're leaving the .transferred file alone. That's a permanent record--don't remove it!
 
   echo -e "${BOLD_CYAN}grabproc.sh has finished running!${NC}"
 }
