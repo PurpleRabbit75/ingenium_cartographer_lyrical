@@ -9,12 +9,10 @@ LIME='\e[38;5;82m' #AB format echo text as bright green
 run_slam=0
 ssh_loc="lidar@10.42.0.1"
 
-#AB Send the output of device 3 to STDOUT, allowing >&3 to be used for logging without accidentally returning stuff from functions
-exec 3>&1
 
 
 function parse_args() {
-  echo "Parsing arguments..." >&3
+  echo "Parsing arguments..." >&2
   #######################################
   # Parses arguments passed to the file.
   # Exits 0 on help and 2 on unexpected argument.
@@ -104,7 +102,7 @@ function ssh_send() {
 
 
 function get_Documents_Data_TLDs() {
-  echo "Getting ~/Documents/Data contents from device ${1}..." >&3
+  echo "Getting ~/Documents/Data contents from device ${1}..." >&2
   #######################################
   # Gets the names of all the directories in ~/Documents/Data that match the pattern "/*/YYYY-MM-DD/"
   # Arguments:
@@ -144,7 +142,7 @@ function get_Documents_Data_TLDs() {
 
 
 function compare_directory_list_files() {
-  echo "Comparing lists of files in ~/Documents/Data from each device..." >&3
+  echo "Comparing lists of files in ~/Documents/Data from each device..." >&2
   #######################################
   # Compares two files full of directory names and returns a list of all the ones in the first not in the second
   # Arguments:
@@ -195,7 +193,7 @@ function compare_directory_list_files() {
 
 
 function zip_specified_directories() {
-  echo "Compressing data directories to .zip archives..." >&3
+  echo "Compressing data directories to .zip archives..." >&2
   #######################################
   # Compresses the specified directories to zip files
   # Arguments:
@@ -233,7 +231,7 @@ function CD_RoM() {
 
 
 function copy_zips_to_local() {
-  echo "Copying zipped archives to local device..." >&3
+  echo "Copying zipped archives to local device..." >&2
   #######################################
   # Copies zip files of specified names to a local device and verifies them by checksum
   # Globals:
@@ -269,7 +267,7 @@ function copy_zips_to_local() {
 
 
 function extract_and_record_zips() {
-  echo "Extracting zip archives at local device..." >&3
+  echo "Extracting zip archives at local device..." >&2
   #######################################
   # Extracts zip files specified in a file passed to the function and records their names in a hidden file
   # Arguments:
@@ -305,7 +303,7 @@ function extract_and_record_zips() {
 
 
 function run_SLAM() {
-  echo "SLAMming located mcaps..." >&3
+  echo "SLAMming located mcaps..." >&2
   #######################################
   # Runs process.sh on every file in any subdirectory of the passed directories with a .mcap or .db3 extension.
   # Arguments:
@@ -333,7 +331,7 @@ function run_SLAM() {
 
 
 function main(){
-  echo "Initializing..." >&3
+  echo "Initializing..." >&2
   #######################################
   # Runs a Bash function on the remote device
   # Globals:
@@ -367,7 +365,7 @@ function main(){
     run_SLAM "$difference_file"
   fi
 
-  echo "${BOLD_CYAN}grabproc.sh has finished running!${NC}"
+  echo -e "${BOLD_CYAN}grabproc.sh has finished running!${NC}"
 }
 
 
@@ -377,20 +375,56 @@ main "$@"
 
 ## Problems
 
+# lidar@Abraham-PC:~/Documents/GitHub/ingenium_cartographer$ ./grabproc.sh --ssh lidar@192.168.44.42
 # Initializing...
 # Parsing arguments...
 # lidar@192.168.44.42's password:
+# environment: line 3: 3: Bad file descriptor
 # lidar@192.168.44.42's password:
-# scp: /home/lidar/Documents/Data/Getting ~/Documents/Data contents from device rpi...
-# rpi_extant_data_directories_2026-07-25_13:00.txt: No such file or directory
-# ./grabproc.sh: line 163: Getting ~/Documents/Data contents from device rpi...
-# rpi_extant_data_directories_2026-07-25_13:00.txt: No such file or directory
-# ./grabproc.sh: line 164: Getting ~/Documents/Data contents from device main...
-# main_extant_data_directories_2026-07-25_13:00.txt: No such file or directory
-# scp: stat local "Comparing lists of files in ~/Documents/Data from each device...
-# RPi_unique_data_files_2026-07-25_13:00.txt": No such file or directory
+# rpi_extant_data_directories_2026-07-25_13:08 100%   48    50.8KB/s   00:00
+# Getting ~/Documents/Data contents from device main...
+# Comparing lists of files in ~/Documents/Data from each device...
 # lidar@192.168.44.42's password:
-# environment: line 6: /home/lidar/Documents/Data/Comparing: No such file or directory
-# bash: line 15: RPi_unique_data_files_2026-07-25_13:00.txt: command not found
-# Remote command "zip_specified_directories /home/lidar/Documents/Data/Comparing lists of files in ~/Documents/Data from each device...
-# RPi_unique_data_files_2026-07-25_13:00.txt" failed with exit code 127
+# ssh: Could not resolve hostname rpi_unique_data_files_2026-07-25_13: Temporary failure in name resolution
+# scp: Connection closed
+# lidar@192.168.44.42's password:
+# environment: line 3: 3: Bad file descriptor
+# environment: line 6: /home/lidar/Documents/Data/RPi_unique_data_files_2026-07-25_13:08.txt: No such file or directory
+
+# Copying zipped archives to local device...
+# lidar@192.168.44.42's password:
+# receiving incremental file list
+# rsync: [sender] link_stat "/home/lidar/Documents/Data/1975/1975-01-01.zip" failed: No such file or directory (2)
+
+# sent 8 bytes  received 8 bytes  3.56 bytes/sec
+# total size is 0  speedup is 0.00
+# rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1887) [Receiver=3.2.7]
+# rsync: [Receiver] write error: Broken pipe (32)
+# \033[0;31mFailed to transfer 1975/1975-01-01. rsync exited with code 23!\033[0m
+# lidar@192.168.44.42's password:
+# receiving incremental file list
+# rsync: [sender] link_stat "/home/lidar/Documents/Data/1980/1980-01-01.zip" failed: No such file or directory (2)
+
+# sent 8 bytes  received 8 bytes  2.13 bytes/sec
+# total size is 0  speedup is 0.00
+# rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1887) [Receiver=3.2.7]
+# rsync: [Receiver] write error: Broken pipe (32)
+# \033[0;31mFailed to transfer 1980/1980-01-01. rsync exited with code 23!\033[0m
+# lidar@192.168.44.42's password:
+# receiving incremental file list
+# rsync: [sender] link_stat "/home/lidar/Documents/Data/1985/1985-01-01.zip" failed: No such file or directory (2)
+
+# sent 8 bytes  received 8 bytes  2.91 bytes/sec
+# total size is 0  speedup is 0.00
+# rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1887) [Receiver=3.2.7]
+# rsync: [Receiver] write error: Broken pipe (32)
+# \033[0;31mFailed to transfer 1985/1985-01-01. rsync exited with code 23!\033[0m
+# Extracting zip archives at local device...
+# unzip:  cannot find or open 1975/1975-01-01.zip, 1975/1975-01-01.zip.zip or 1975/1975-01-01.zip.ZIP.
+# \033[0;31mFailed to extract 1975/1975-01-01. unzip exited with code 9!\033[0m
+# unzip:  cannot find or open 1980/1980-01-01.zip, 1980/1980-01-01.zip.zip or 1980/1980-01-01.zip.ZIP.
+# \033[0;31mFailed to extract 1980/1980-01-01. unzip exited with code 9!\033[0m
+# unzip:  cannot find or open 1985/1985-01-01.zip, 1985/1985-01-01.zip.zip or 1985/1985-01-01.zip.ZIP.
+# \033[0;31mFailed to extract 1985/1985-01-01. unzip exited with code 9!\033[0m
+# \e[1;36mgrabproc.sh has finished running!\033[0m
+# lidar@Abraham-PC:~/Documents/GitHub/ingenium_cartographer$
