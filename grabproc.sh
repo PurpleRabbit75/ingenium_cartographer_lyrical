@@ -8,6 +8,7 @@ LIME='\e[38;5;82m' #AB format echo text as bright green
 
 run_slam=0
 ssh_loc="lidar@10.42.0.1"
+convert_slam_files=0
 
 
 
@@ -24,7 +25,7 @@ function parse_args() {
   #   Edits globals as appropriate
   #######################################
   
-  PARSED=$(getopt -o hs --long help,SLAM,ssh: -n "$0" -- "$@") || { print_help; exit 2; }
+  PARSED=$(getopt -o hs --long help,SLAM,ssh,convert: -n "$0" -- "$@") || { print_help; exit 2; }
   eval set -- "$PARSED"
 
   while true; do
@@ -32,6 +33,7 @@ function parse_args() {
       -h|--help) print_help; exit 0 ;; #AB This is technically breaking the spec, which calls for -h _not_ to exit, but that seems nonsensical to me after reading more about CLIs, so I'm going to ignore the RFS on this point. 
       -s|--SLAM) run_slam=1; shift ;;
       --ssh) ssh_loc="$2"; shift 2 ;;
+      --convert) convert_slam_files=1; shift ;;
       --) shift; break ;;
       *) echo "Unexpected option: $1" >&2; print_help; exit 2 ;;
     esac
@@ -306,6 +308,8 @@ function run_SLAM() {
   echo "SLAMming located mcaps..." >&2
   #######################################
   # Runs process.sh on every file in any subdirectory of the passed directories with a .mcap or .db3 extension.
+  # Globals:
+  #   convert_slam_files
   # Arguments:
   #   $1 - a file containing a \n-separated list of directories in whose subdirectories to search for raw data files
   # Outputs:
@@ -323,11 +327,19 @@ function run_SLAM() {
 
     shopt -s nullglob
 
-    for filename in "${day_dirs_array[@]}"; do #AB filename covers 2026/2026-07-24/ in this example
-      for f in "$HOME/Documents/Data/$filename"/*/*/*.mcap; do
-        ~/Documents/GitHub/ingenium_cartographer/process.sh "$f"
+    if [[ convert_slam_files -eq 1]]; then
+      for filename in "${day_dirs_array[@]}"; do #AB filename covers 2026/2026-07-24/ in this example
+        for f in "$HOME/Documents/Data/$filename"/*/*/*.mcap; do
+          ~/Documents/GitHub/ingenium_cartographer/process.sh "$f" --convert
+        done
       done
-    done
+    else
+      for filename in "${day_dirs_array[@]}"; do #AB filename covers 2026/2026-07-24/ in this example
+        for f in "$HOME/Documents/Data/$filename"/*/*/*.mcap; do
+          ~/Documents/GitHub/ingenium_cartographer/process.sh "$f"
+        done
+      done
+    fi
 
     cd "$cwd"
     shopt -u nullglob
