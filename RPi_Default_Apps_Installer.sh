@@ -8,7 +8,7 @@
 
 
 #FK updates and upgrades
-sudo apt update && sudo apt upgrade && sudo apt autoremove
+sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y
 
 apt_flags=("-y")
 
@@ -80,7 +80,7 @@ cd ~/Documents/GitHub/ingenium_cartographer
 #---------------------------------------------UPDATE THE SYSTEM AGAIN---------------------------------------------
 
 
-sudo apt update && sudo apt upgrade && sudo apt autoremove
+sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y
 
 
 
