@@ -387,17 +387,18 @@ main "$@"
 # Initializing...
 # Parsing arguments...
 # lidar@192.168.44.42's password:
-# environment: line 3: 3: Bad file descriptor
+# Getting ~/Documents/Data contents from device rpi...
 # lidar@192.168.44.42's password:
-# rpi_extant_data_directories_2026-07-25_13:08 100%   48    50.8KB/s   00:00
+# rpi_extant_data_directories_2026-07-25_13 100%   48    41.1KB/s   00:00
 # Getting ~/Documents/Data contents from device main...
 # Comparing lists of files in ~/Documents/Data from each device...
 # lidar@192.168.44.42's password:
-# ssh: Could not resolve hostname rpi_unique_data_files_2026-07-25_13: Temporary failure in name resolution
-# scp: Connection closed
+# RPi_unique_data_files_2026-07-25_13_29.tx 100%   48    62.4KB/s   00:00
 # lidar@192.168.44.42's password:
-# environment: line 3: 3: Bad file descriptor
-# environment: line 6: /home/lidar/Documents/Data/RPi_unique_data_files_2026-07-25_13:08.txt: No such file or directory
+# Compressing data directories to .zip archives...
+# environment: line 11: zip: command not found
+# environment: line 11: zip: command not found
+# environment: line 11: zip: command not found
 
 # Copying zipped archives to local device...
 # lidar@192.168.44.42's password:
@@ -408,7 +409,7 @@ main "$@"
 # total size is 0  speedup is 0.00
 # rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1887) [Receiver=3.2.7]
 # rsync: [Receiver] write error: Broken pipe (32)
-# \033[0;31mFailed to transfer 1975/1975-01-01. rsync exited with code 23!\033[0m
+# Failed to transfer 1975/1975-01-01. rsync exited with code 23!
 # lidar@192.168.44.42's password:
 # receiving incremental file list
 # rsync: [sender] link_stat "/home/lidar/Documents/Data/1980/1980-01-01.zip" failed: No such file or directory (2)
@@ -417,22 +418,22 @@ main "$@"
 # total size is 0  speedup is 0.00
 # rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1887) [Receiver=3.2.7]
 # rsync: [Receiver] write error: Broken pipe (32)
-# \033[0;31mFailed to transfer 1980/1980-01-01. rsync exited with code 23!\033[0m
+# Failed to transfer 1980/1980-01-01. rsync exited with code 23!
 # lidar@192.168.44.42's password:
 # receiving incremental file list
 # rsync: [sender] link_stat "/home/lidar/Documents/Data/1985/1985-01-01.zip" failed: No such file or directory (2)
 
-# sent 8 bytes  received 8 bytes  2.91 bytes/sec
+# sent 8 bytes  received 8 bytes  4.57 bytes/sec
 # total size is 0  speedup is 0.00
 # rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1887) [Receiver=3.2.7]
 # rsync: [Receiver] write error: Broken pipe (32)
-# \033[0;31mFailed to transfer 1985/1985-01-01. rsync exited with code 23!\033[0m
+# Failed to transfer 1985/1985-01-01. rsync exited with code 23!
 # Extracting zip archives at local device...
 # unzip:  cannot find or open 1975/1975-01-01.zip, 1975/1975-01-01.zip.zip or 1975/1975-01-01.zip.ZIP.
-# \033[0;31mFailed to extract 1975/1975-01-01. unzip exited with code 9!\033[0m
+# Failed to extract 1975/1975-01-01. unzip exited with code 9!
 # unzip:  cannot find or open 1980/1980-01-01.zip, 1980/1980-01-01.zip.zip or 1980/1980-01-01.zip.ZIP.
-# \033[0;31mFailed to extract 1980/1980-01-01. unzip exited with code 9!\033[0m
+# Failed to extract 1980/1980-01-01. unzip exited with code 9!
 # unzip:  cannot find or open 1985/1985-01-01.zip, 1985/1985-01-01.zip.zip or 1985/1985-01-01.zip.ZIP.
-# \033[0;31mFailed to extract 1985/1985-01-01. unzip exited with code 9!\033[0m
-# \e[1;36mgrabproc.sh has finished running!\033[0m
+# Failed to extract 1985/1985-01-01. unzip exited with code 9!
+# grabproc.sh has finished running!
 # lidar@Abraham-PC:~/Documents/GitHub/ingenium_cartographer$
