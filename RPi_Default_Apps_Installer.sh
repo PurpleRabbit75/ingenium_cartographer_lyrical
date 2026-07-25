@@ -52,16 +52,16 @@ rm Install_LIO-SAM.sh Install_SLAM.sh Install_rsasaki_slam.sh
 mv Install_Jazzy.sh ..
 
 
-cd cartographer_config #FK go into the config folder
+cd ~/Documents/GitHub/ingenium_cartographer/cartographer_config
 sudo mv use_network_manager.yaml /etc/netplan #FK move file that makes Ubuntu Server use NetworkManager into the correct folder
 
 
-sudo chmod +x RPi_Network_Config.sh #FK mark the second installer script as executable
 sudo mv RPi_Network_Config.sh ~ #FK move second installer script to the main directory
 sudo mv .bash_aliases ~ #AB Move the .bash_aliases file in cartographer_config to the home directory. 
-#AB Clean up all files in cartographer_config that aren't needed for the ROS2 system
 mv microstrain_launch_ingenium.py ..
-cd ..
+
+#AB Clean up all files in cartographer_config that aren't needed for the ROS2 system
+cd ~/Documents/GitHub/ingenium_cartographer
 sudo rm -rfd cartographer_config
 mkdir cartographer_config
 mv microstrain_launch_ingenium.py cartographer_config
@@ -71,6 +71,7 @@ mv microstrain_launch_ingenium.py cartographer_config
 #---------------------------------------------INSTALL ROS JAZZY---------------------------------------------
  
 
+cd ~/Documents/GitHub/ingenium_cartographer
 #AB Install ROS Jazzy
 ./Install_Jazzy.sh 
 
@@ -79,9 +80,7 @@ mv microstrain_launch_ingenium.py cartographer_config
 #---------------------------------------------UPDATE THE SYSTEM AGAIN---------------------------------------------
 
 
-sudo apt update
-sudo apt upgrade
-sudo apt autoremove
+sudo apt update && sudo apt upgrade && sudo apt autoremove
 
 
 
