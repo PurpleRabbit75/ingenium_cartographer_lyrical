@@ -4,19 +4,28 @@
 #AB This script has been majorly updated since it was last tested from scratch. Please verify functionality and report bugs to the other devs.
 
 
-#---------------------------------------------UPDATE THE SYSTEM AND INSTALL PACKAGES---------------------------------------------
+#---------------------------------------------UPDATE THE SYSTEM AND INSTALL APT PACKAGES---------------------------------------------
 
 
 #FK updates and upgrades
-sudo apt update
-sudo apt upgrade
-sudo apt autoremove
+sudo apt update && sudo apt upgrade && sudo apt autoremove
 
-sudo apt install -y network-manager #AB add utility for managing networks
-sudo apt install -y net-tools #AB add another utility for managing networks
-sudo apt-get install -y git #AB install git, just in case it is not already installed
-sudo apt install -y yamllint #AB a tool to check the syntax of YAML files
-sudo apt install -y sl #AB Install sl, an alias for ls
+apt_flags=("-y")
+
+apt_packages=(
+    git                               #AB a version control tool
+    network-manager                   #AB Install network configuration tool (this is nmcli!)
+    net-tools                         #AB includes ifconfig and other useful network configuration tools
+    sl                                #AB Install sl, an alias for ls
+    yamllint                          #AB a tool to check the syntax of YAML files
+)
+
+for package in "${apt_packages[@]}"; do
+    echo ""
+    echo ">>> Installing: $package"
+    sudo apt-get install "${apt_flags[@]}" "$package" 
+done
+
 
 
 #---------------------------------------------INSTALL INGENIUM CARTOGRAPHER REPOSITORY---------------------------------------------
@@ -38,12 +47,12 @@ rm Default_Apps_Installer.sh display_bag.sh install.sh process_bag.sh subtract.s
 sudo rm -r python_scripts
 sudo rm -r gui_scripts
 
-cd .. #AB Return to the ingenium_cartographer directory
-cd agent_scripts
+cd ~/Documents/GitHub/ingenium_cartographer/agent_scripts
 rm Install_LIO-SAM.sh Install_SLAM.sh Install_rsasaki_slam.sh
 mv Install_Jazzy.sh ..
 
-cd .. #AB Return to the ingenium_cartographer directory
+
+cd ~/Documents/GitHub/ingenium_cartographer
 for file in *; do #AB Iterate through all files within it
   if [[ "$file" == *.sh ]]; then #AB If the file is a bash script (i.e., if it ends in .sh)...
     chmod +x $file #AB ...then mark it as executable
