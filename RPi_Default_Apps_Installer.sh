@@ -1,7 +1,8 @@
 #!/bin/bash
 
 #AB Run on a clean Ubuntu Server 24.04.2 LTS system
-#AB This script has been majorly updated since it was last tested from scratch. Please verify functionality and report bugs to the other devs.
+# This script was last run with no fatal errors on 2026-07-25
+# This script was last run with no errors on 2026-07-25
 
 
 #---------------------------------------------UPDATE THE SYSTEM AND INSTALL APT PACKAGES---------------------------------------------
