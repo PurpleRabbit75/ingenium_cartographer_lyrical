@@ -52,14 +52,6 @@ rm Install_LIO-SAM.sh Install_SLAM.sh Install_rsasaki_slam.sh
 mv Install_Jazzy.sh ..
 
 
-cd ~/Documents/GitHub/ingenium_cartographer
-for file in *; do #AB Iterate through all files within it
-  if [[ "$file" == *.sh ]]; then #AB If the file is a bash script (i.e., if it ends in .sh)...
-    chmod +x $file #AB ...then mark it as executable
-  fi
-done
-
-
 cd cartographer_config #FK go into the config folder
 sudo mv use_network_manager.yaml /etc/netplan #FK move file that makes Ubuntu Server use NetworkManager into the correct folder
 
