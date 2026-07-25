@@ -321,11 +321,16 @@ function run_SLAM() {
     readarray -t day_dirs_array < "$day_dirs_file"
     cd ~/Documents/Data
 
-    for filename in "${day_dirs_array[@]}"; do #AB filename covers 2026/2026-07-24/ in this examle
-      ~/Documents/GitHub/ingenium_cartographer/process.sh "$HOME/Documents/Data/$filename/*/*/*.mcap"
+    shopt -s nullglob
+
+    for filename in "${day_dirs_array[@]}"; do #AB filename covers 2026/2026-07-24/ in this example
+      for f in "$HOME/Documents/Data/$filename"/*/*/*.mcap; do
+        ~/Documents/GitHub/ingenium_cartographer/process.sh "$f"
+      done
     done
 
     cd "$cwd"
+    shopt -u nullglob
 }
 
 
