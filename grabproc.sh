@@ -349,7 +349,7 @@ function main(){
 
   #AB Copy the appropriate files over from the RPi (remote) to the main (local) device.
 
-  parse_args                                                                    #AB Parse script input
+  parse_args "$@"                                                               #AB Parse script input
   remote_dir_list_file=$(ssh_send "get_Documents_Data_TLDs 'rpi'")              #AB Make a list of directories in remote://~/Documents/Data/ that follow the YYYY-MM-DD pattern. This variable stores the filename
   scp "${ssh_loc}:${HOME}/Documents/Data/$remote_dir_list_file" "${HOME}/Documents/Data/"   #AB Move that file to local://~/Documents/Data/. This is a reversal of the pattern suggested in the RFS (which wanted the local SCP'd to the remote), but on actually writing the code, this method dramatically simplifies things, improving code quality without altering functionality
   local_dir_list_file=$(get_Documents_Data_TLDs 'main')                         #AB Make a list of directories in  local://~/Documents/Data/ that follow the YYYY-MM-DD pattern. This variable stores the filename
@@ -369,4 +369,4 @@ function main(){
 }
 
 
-main
+main "$@"
