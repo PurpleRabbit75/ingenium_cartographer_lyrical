@@ -88,11 +88,5 @@ sudo apt update && sudo apt upgrade && sudo apt autoremove
 
 
 echo "RPi_Default_Apps_Installer.sh has finished running now."
-sleep 2
-echo "System will reboot in..."
-echo 5 && sleep 1
-echo 4 && sleep 1
-echo 3 && sleep 1
-echo 2 && sleep 1
-echo 1 && sleep 1
-reboot
+cd ~/Documents/GitHub/ingenium_cartographer/agent_scripts
+./reboot.sh
