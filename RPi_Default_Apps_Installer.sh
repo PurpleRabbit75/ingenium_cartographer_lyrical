@@ -67,16 +67,11 @@ mv microstrain_launch_ingenium.py cartographer_config
 
 
 
-#---------------------------------------------INSTALL ROS JAZZY AND DRIVERS---------------------------------------------
-
+#---------------------------------------------INSTALL ROS JAZZY---------------------------------------------
+ 
 
 #AB Install ROS Jazzy
 ./Install_Jazzy.sh 
-
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install -y ros-jazzy-velodyne                    #AB Install the LiDAR driver. This and the following are not a regular part of APT, but they are accessible to APT after Jazzy has been installed
-sudo apt-get install -y ros-jazzy-microstrain-inertial-driver #AB Install the IMU driver. 
 
 
 
