@@ -259,7 +259,7 @@ function copy_zips_to_local() {
         ssh_send "CD_RoM -rf $filename"
         ssh_send "CD_RoM ${filename}.zip"
       else
-        echo "${RED}Failed to transfer $filename. rsync exited with code $rsync_error_code!${NC}" >&2
+        echo -e "${RED}Failed to transfer $filename. rsync exited with code $rsync_error_code!${NC}" >&2
       fi
   done
 }
@@ -292,7 +292,7 @@ function extract_and_record_zips() {
       if [[ $unzip_error_code -eq 0 ]]; then #AB If the extraction worked, delete the original .zip file
         rm "${filename}.zip"
       else
-        echo "${RED}Failed to extract $filename. unzip exited with code $unzip_error_code!${NC}" >&2
+        echo -e "${RED}Failed to extract $filename. unzip exited with code $unzip_error_code!${NC}" >&2
       fi
       echo "$filename" >> "$transfer_record" #AB We're recording whether the .zip made it, not whether the zip extracted or not. 
     done
@@ -345,6 +345,7 @@ function main(){
   local local_dir_list_file
   local remote_dir_list_file
   local difference_file
+  local diff_file_transfer_err
   local cwd=$(pwd)
 
   #AB Copy the appropriate files over from the RPi (remote) to the main (local) device.
@@ -355,7 +356,14 @@ function main(){
   local_dir_list_file=$(get_Documents_Data_TLDs 'main')                         #AB Make a list of directories in  local://~/Documents/Data/ that follow the YYYY-MM-DD pattern. This variable stores the filename
   cd ~/Documents/Data
   difference_file=$(compare_directory_list_files "$remote_dir_list_file" "$local_dir_list_file") #AB Get the name of a file just created in ~/Documents/Data (since that's where the function ran) containing the data directories on the remote (RPi) that are not on the local (main) device.
+  
   scp "$difference_file" "${ssh_loc}:${HOME}/Documents/Data/"                   #AB move the difference file over to the RPi
+  diff_file_transfer_err=$?
+  if [[ $diff_file_transfer_err -ne 0 ]]; then
+      echo "ERROR: Difference file failed to transfer. scp exited with code ${diff_file_transfer_err}!"
+      exit $diff_file_transfer_err
+  fi
+
   ssh_send "zip_specified_directories ${HOME}/Documents/Data/$difference_file"  #AB On the RPi, zip all the directories in the difference file (that is, all the directories which exist only on the RPi/remote and not on the G16/main computer/local)
   copy_zips_to_local "$difference_file"                                         #AB Use rsync (like scp, but slower and more reliable) to copy the remote zips to the local device and remove them from the remote
   extract_and_record_zips "$difference_file"                                    #AB Extract the transported zips and record their existence
