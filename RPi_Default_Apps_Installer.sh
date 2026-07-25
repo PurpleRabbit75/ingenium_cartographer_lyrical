@@ -19,6 +19,7 @@ apt_packages=(
     net-tools                         #AB includes ifconfig and other useful network configuration tools
     sl                                #AB Install sl, an alias for ls
     yamllint                          #AB a tool to check the syntax of YAML files
+    zip                               #AB An archive manager
 )
 
 for package in "${apt_packages[@]}"; do
