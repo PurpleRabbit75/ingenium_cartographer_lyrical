@@ -5,19 +5,31 @@
 #---------------------------------------------GET INPUT AND SET GLOBALS---------------------------------------------
 
 
-input_file="${1:?input_file is required}"                                 # ../..//Data/2026-07-23/92/92_RAW_1784823750_0.mcap
-color="$2"
+PARSED=$(getopt -o hf: --long color:,fuzz,help,convert -n "$0" -- "$@")
+eval set -- "$PARSED"
+
 last_color_file="cartographer_config/.last_color_used.txt"
+color=""
+write_fuzz_files=0
+convert_output=0
 
+while true; do
+  case "$1" in
+    --color) color="$1"; shift ;;
+    --convert) convert_output=1; shift ;;
+    -f|--fuzz) write_fuzz_files=1; shift ;;
+    -h|--help) echo -e "Usage: ./process.sh <input_mcap> [-f|--fuzz] [--convert] [--color <\"(r,g,b)\">] \n--color colors the converted .ply file. \n--fuzz creates empty files with the same names as real data files, for testing purposes. \n--convert converts the .pcd to a colored .ply and the .g2o to a .poly file"; exit 0 ;;
+    --) shift; break ;;
+    *) echo "Unexpected option: $1" >&2; echo "Usage: ./process.sh <input_mcap> [-c|--color <(r,g,b)>] [-f|--fuzz]"; exit 2 ;;
+  esac
+done
 
-if [ -z "$input_file" ]; then #AB If the $input_file variable is empty, then...
-  echo "Usage: $0 <input_mcap> [color]"
-  exit 2
-fi
+input_file="${1:?input_file is required}"                                 # ../..//Data/2026-07-23/92/92_RAW_1784823750_0.mcap
+
 
 input_file="$(realpath "$input_file")"                                    # /home/lidar/Documents/Data/2026-07-23/92/92_RAW_1784823750_0.mcap
 if [ ! -f "$input_file" ]; then #AB If $input_file is not a file, then...
-  echo "Input file not found: $input_file"
+  echo "ERROR: Input file not found: $input_file"
   exit 2
 fi
 
@@ -75,16 +87,17 @@ ros2 service call /map_save std_srvs/Empty
 
 
 
-# # FUZZ CODE FOR TESTING PURPOSES
 # #AB This code block creates empty files with names identical to the ones produced by the SLAM 
 # #   Note that the a.pcd/b.pcd etc. files are numbered in actual SLAM output. 
-# touch map.pcd
-# touch map_projector_info.yaml
-# touch pose_graph.g2o
-# mkdir pointcloud_map/
-# touch pointcloud_map/a.pcd
-# touch pointcloud_map/b.pcd
-# touch pointcloud_map/c.pcd
+if [[ $write_fuzz_files -eq 1 ]]; then
+    touch map.pcd
+    touch map_projector_info.yaml
+    touch pose_graph.g2o
+    mkdir pointcloud_map/
+    touch pointcloud_map/a.pcd
+    touch pointcloud_map/b.pcd
+    touch pointcloud_map/c.pcd
+fi
 
 
 
@@ -141,8 +154,11 @@ else #AB If there _is_ a color parameter, just roll with that
     new_color="$color"
 fi
 
-# #AB Convert the g2o file to a poly file
-# ~/Documents/GitHub/SLAM_testing/tools/g2o-to-poly.py "$output_dir"/pose_graph.g2o "$output_dir"/pose_graph.poly
 
-# #AB Convert the pcd file to a ply file of different color than the previous two
-# ~/Documents/GitHub/SLAM_testing/tools/pcd-to-colored-ply.py "$output_dir"/map.pcd "$new_color"
+if [[ $convert_output -eq 1 ]]; then
+    #AB Convert the g2o file to a poly file
+    ~/Documents/GitHub/SLAM_testing/tools/g2o-to-poly.py "$output_dir"/pose_graph.g2o "$output_dir"/pose_graph.poly
+
+    #AB Convert the pcd file to a ply file of different color than the previous two
+    ~/Documents/GitHub/SLAM_testing/tools/pcd-to-colored-ply.py "$output_dir"/map.pcd "$new_color"
+fi
