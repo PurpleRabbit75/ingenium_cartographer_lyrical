@@ -9,10 +9,12 @@ LIME='\e[38;5;82m' #AB format echo text as bright green
 run_slam=0
 ssh_loc="lidar@10.42.0.1"
 
+#AB Send the output of device 3 to STDOUT, allowing >&3 to be used for logging without accidentally returning stuff from functions
+exec 3>&1
 
 
 function parse_args() {
-  echo "Parsing arguments..."
+  echo "Parsing arguments..." >&3
   #######################################
   # Parses arguments passed to the file.
   # Exits 0 on help and 2 on unexpected argument.
@@ -102,7 +104,7 @@ function ssh_send() {
 
 
 function get_Documents_Data_TLDs() {
-  echo "Getting ~/Documents/Data contents from device ${1}..."
+  echo "Getting ~/Documents/Data contents from device ${1}..." >&3
   #######################################
   # Gets the names of all the directories in ~/Documents/Data that match the pattern "/*/YYYY-MM-DD/"
   # Arguments:
@@ -142,7 +144,7 @@ function get_Documents_Data_TLDs() {
 
 
 function compare_directory_list_files() {
-  echo "Comparing lists of files in ~/Documents/Data from each device..."
+  echo "Comparing lists of files in ~/Documents/Data from each device..." >&3
   #######################################
   # Compares two files full of directory names and returns a list of all the ones in the first not in the second
   # Arguments:
@@ -193,7 +195,7 @@ function compare_directory_list_files() {
 
 
 function zip_specified_directories() {
-  echo "Compressing data directories to .zip archives..."
+  echo "Compressing data directories to .zip archives..." >&3
   #######################################
   # Compresses the specified directories to zip files
   # Arguments:
@@ -231,7 +233,7 @@ function CD_RoM() {
 
 
 function copy_zips_to_local() {
-  echo "Copying zipped archives to local device..."
+  echo "Copying zipped archives to local device..." >&3
   #######################################
   # Copies zip files of specified names to a local device and verifies them by checksum
   # Globals:
@@ -267,7 +269,7 @@ function copy_zips_to_local() {
 
 
 function extract_and_record_zips() {
-  echo "Extracting zip archives at local device..."
+  echo "Extracting zip archives at local device..." >&3
   #######################################
   # Extracts zip files specified in a file passed to the function and records their names in a hidden file
   # Arguments:
@@ -303,7 +305,7 @@ function extract_and_record_zips() {
 
 
 function run_SLAM() {
-  echo "SLAMming located mcaps..."
+  echo "SLAMming located mcaps..." >&3
   #######################################
   # Runs process.sh on every file in any subdirectory of the passed directories with a .mcap or .db3 extension.
   # Arguments:
@@ -331,7 +333,7 @@ function run_SLAM() {
 
 
 function main(){
-  echo "Initializing..."
+  echo "Initializing..." >&3
   #######################################
   # Runs a Bash function on the remote device
   # Globals:
@@ -370,3 +372,25 @@ function main(){
 
 
 main "$@"
+
+
+
+## Problems
+
+# Initializing...
+# Parsing arguments...
+# lidar@192.168.44.42's password:
+# lidar@192.168.44.42's password:
+# scp: /home/lidar/Documents/Data/Getting ~/Documents/Data contents from device rpi...
+# rpi_extant_data_directories_2026-07-25_13:00.txt: No such file or directory
+# ./grabproc.sh: line 163: Getting ~/Documents/Data contents from device rpi...
+# rpi_extant_data_directories_2026-07-25_13:00.txt: No such file or directory
+# ./grabproc.sh: line 164: Getting ~/Documents/Data contents from device main...
+# main_extant_data_directories_2026-07-25_13:00.txt: No such file or directory
+# scp: stat local "Comparing lists of files in ~/Documents/Data from each device...
+# RPi_unique_data_files_2026-07-25_13:00.txt": No such file or directory
+# lidar@192.168.44.42's password:
+# environment: line 6: /home/lidar/Documents/Data/Comparing: No such file or directory
+# bash: line 15: RPi_unique_data_files_2026-07-25_13:00.txt: command not found
+# Remote command "zip_specified_directories /home/lidar/Documents/Data/Comparing lists of files in ~/Documents/Data from each device...
+# RPi_unique_data_files_2026-07-25_13:00.txt" failed with exit code 127
