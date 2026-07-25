@@ -12,6 +12,7 @@ ssh_loc="lidar@10.42.0.1"
 
 
 function parse_args() {
+  echo "Parsing arguments..."
   #######################################
   # Parses arguments passed to the file.
   # Exits 0 on help and 2 on unexpected argument.
@@ -101,6 +102,7 @@ function ssh_send() {
 
 
 function get_Documents_Data_TLDs() {
+  echo "Getting ~/Documents/Data contents from device ${1}..."
   #######################################
   # Gets the names of all the directories in ~/Documents/Data that match the pattern "/*/YYYY-MM-DD/"
   # Arguments:
@@ -140,6 +142,7 @@ function get_Documents_Data_TLDs() {
 
 
 function compare_directory_list_files() {
+  echo "Comparing lists of files in ~/Documents/Data from each device..."
   #######################################
   # Compares two files full of directory names and returns a list of all the ones in the first not in the second
   # Arguments:
@@ -190,6 +193,7 @@ function compare_directory_list_files() {
 
 
 function zip_specified_directories() {
+  echo "Compressing data directories to .zip archives..."
   #######################################
   # Compresses the specified directories to zip files
   # Arguments:
@@ -227,6 +231,7 @@ function CD_RoM() {
 
 
 function copy_zips_to_local() {
+  echo "Copying zipped archives to local device..."
   #######################################
   # Copies zip files of specified names to a local device and verifies them by checksum
   # Globals:
@@ -262,6 +267,7 @@ function copy_zips_to_local() {
 
 
 function extract_and_record_zips() {
+  echo "Extracting zip archives at local device..."
   #######################################
   # Extracts zip files specified in a file passed to the function and records their names in a hidden file
   # Arguments:
@@ -297,6 +303,7 @@ function extract_and_record_zips() {
 
 
 function run_SLAM() {
+  echo "SLAMming located mcaps..."
   #######################################
   # Runs process.sh on every file in any subdirectory of the passed directories with a .mcap or .db3 extension.
   # Arguments:
@@ -324,6 +331,7 @@ function run_SLAM() {
 
 
 function main(){
+  echo "Initializing..."
   #######################################
   # Runs a Bash function on the remote device
   # Globals:
