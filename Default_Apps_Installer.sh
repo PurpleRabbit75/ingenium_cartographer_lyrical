@@ -105,7 +105,7 @@ mkdir ~/Documents/Data
 mkdir ~/Documents/Garbage
 
 mkdir ~/Apps
-mkdir -p ~/Apps/ros2_ws/src
+
 
 
 cd ~/Documents #AB Clone the RFCS repository, which contains .md files which document work that needs to be done.
@@ -149,23 +149,9 @@ mv ~/Documents/GitHub/ingenium_cartographer/cartographer_config/.bash_aliases ~ 
 #---------------------------------------------INSTALL ROS2 Jazzy---------------------------------------------
 
 
-echo -e "$LIME Installing ROS2 Jazzy Jalisco...$NC "
+echo -e "$LIME Installing ROS2 Lyrical Luth...$NC "
 cd ~/Documents/GitHub/ingenium_cartographer/agent_scripts #AB Navigate to the ingenium_cartographer/agent_scripts directory.
-./Install_Jazzy.sh #AB Run the Install_Jazzy.sh script to install ROS Jazzy 
-
-
-
-#---------------------------------------------INSTALL HARDWARE DRIVERS---------------------------------------------
-
-
-echo -e "$LIME Updating and upgrading apt...$NC "
-sudo apt update && sudo apt upgrade -y
-sleep 1
-
-#AB We install these here and not above with the other apt installs because they require ROS Jazzy to be installed first
-echo -e "$LIME Installing hardware drivers...$NC "
-sudo apt install ros-jazzy-velodyne -y #AB Install the Velodyne driver. It's in a stack hosted (I believe) on the ROS website.
-sudo apt install ros-jazzy-microstrain-inertial-driver -y #AB Install the IMU driver. These drivers are now maintained as part of the built-in ROS package manager! 
+./Install_Lyrical.sh #AB Run the Install_Jazzy.sh script to install ROS Jazzy 
 
 
 
