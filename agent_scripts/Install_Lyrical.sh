@@ -6,7 +6,7 @@ cwd=$(pwd)
 
 echo "Updating apt..."
 sleep 1
-sudo apt update-y && sudo apt upgrade -y && sudo apt autoremove -y
+sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y
 
 echo "Installing universe repository..."
 sleep 1
